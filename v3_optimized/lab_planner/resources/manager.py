@@ -218,6 +218,20 @@ class ResourceManager:
         self._enable_concurrent = enable
         logger.info(f"Concurrent mode {'enabled' if enable else 'disabled'}")
     
+    def get_all_technicians(self) -> List[Technician]:
+        """Get all technicians from all pools (helper for kernel scheduler)."""
+        all_techs = []
+        for pool in self._tech_pools.values():
+            all_techs.extend(pool._resources)
+        return all_techs
+    
+    def get_all_equipment(self) -> List[Equipment]:
+        """Get all equipment from all pools."""
+        all_equip = []
+        for pool in self._equip_pools.values():
+            all_equip.extend(pool._resources)
+        return all_equip
+    
     def __repr__(self) -> str:
         return (f"ResourceManager("
                 f"techs={sum(len(p) for p in self._tech_pools.values())}, "

@@ -102,6 +102,10 @@ class LabPlanner:
             # Step 5: Prepare results
             result = schedule.to_dict()
             
+            # Ajouter métriques kernel si disponibles (pour KernelScheduler)
+            if hasattr(self._strategy, 'kernel_metrics'):
+                result['metrics'].update(self._strategy.kernel_metrics)
+            
             # Add execution metadata
             execution_time = time.time() - start_time
             result['metadata'] = {
