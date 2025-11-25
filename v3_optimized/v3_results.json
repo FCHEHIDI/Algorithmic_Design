@@ -1,0 +1,179 @@
+{
+  "schedule": [
+    {
+      "sample_id": "S13",
+      "technician_id": "T1",
+      "equipment_id": "E1",
+      "start_time": 24,
+      "end_time": 29,
+      "priority": "STAT"
+    },
+    {
+      "sample_id": "S16",
+      "technician_id": "T1",
+      "equipment_id": "E1",
+      "start_time": 30,
+      "end_time": 33,
+      "priority": "STAT"
+    },
+    {
+      "sample_id": "S10",
+      "technician_id": "T1",
+      "equipment_id": "E1",
+      "start_time": 18,
+      "end_time": 25,
+      "priority": "STAT"
+    },
+    {
+      "sample_id": "S01",
+      "technician_id": "T1",
+      "equipment_id": "E1",
+      "start_time": 0,
+      "end_time": 3,
+      "priority": "STAT"
+    },
+    {
+      "sample_id": "S04",
+      "technician_id": "T1",
+      "equipment_id": "E1",
+      "start_time": 6,
+      "end_time": 12,
+      "priority": "STAT"
+    },
+    {
+      "sample_id": "S07",
+      "technician_id": "T1",
+      "equipment_id": "E1",
+      "start_time": 12,
+      "end_time": 16,
+      "priority": "STAT"
+    },
+    {
+      "sample_id": "S19",
+      "technician_id": "T1",
+      "equipment_id": "E1",
+      "start_time": 36,
+      "end_time": 42,
+      "priority": "STAT"
+    },
+    {
+      "sample_id": "S14",
+      "technician_id": "T3",
+      "equipment_id": "E3",
+      "start_time": 26,
+      "end_time": 32,
+      "priority": "URGENT"
+    },
+    {
+      "sample_id": "S17",
+      "technician_id": "T3",
+      "equipment_id": "E3",
+      "start_time": 32,
+      "end_time": 36,
+      "priority": "URGENT"
+    },
+    {
+      "sample_id": "S05",
+      "technician_id": "T3",
+      "equipment_id": "E3",
+      "start_time": 8,
+      "end_time": 15,
+      "priority": "URGENT"
+    },
+    {
+      "sample_id": "S02",
+      "technician_id": "T3",
+      "equipment_id": "E3",
+      "start_time": 2,
+      "end_time": 6,
+      "priority": "URGENT"
+    },
+    {
+      "sample_id": "S11",
+      "technician_id": "T3",
+      "equipment_id": "E3",
+      "start_time": 20,
+      "end_time": 23,
+      "priority": "URGENT"
+    },
+    {
+      "sample_id": "S08",
+      "technician_id": "T3",
+      "equipment_id": "E3",
+      "start_time": 14,
+      "end_time": 19,
+      "priority": "URGENT"
+    },
+    {
+      "sample_id": "S20",
+      "technician_id": "T3",
+      "equipment_id": "E3",
+      "start_time": 38,
+      "end_time": 45,
+      "priority": "URGENT"
+    },
+    {
+      "sample_id": "S06",
+      "technician_id": "T4",
+      "equipment_id": "E4",
+      "start_time": 10,
+      "end_time": 13,
+      "priority": "ROUTINE"
+    },
+    {
+      "sample_id": "S03",
+      "technician_id": "T4",
+      "equipment_id": "E4",
+      "start_time": 4,
+      "end_time": 9,
+      "priority": "ROUTINE"
+    },
+    {
+      "sample_id": "S18",
+      "technician_id": "T4",
+      "equipment_id": "E4",
+      "start_time": 34,
+      "end_time": 39,
+      "priority": "ROUTINE"
+    },
+    {
+      "sample_id": "S12",
+      "technician_id": "T4",
+      "equipment_id": "E4",
+      "start_time": 22,
+      "end_time": 26,
+      "priority": "ROUTINE"
+    },
+    {
+      "sample_id": "S09",
+      "technician_id": "T4",
+      "equipment_id": "E4",
+      "start_time": 16,
+      "end_time": 22,
+      "priority": "ROUTINE"
+    },
+    {
+      "sample_id": "S15",
+      "technician_id": "T4",
+      "equipment_id": "E4",
+      "start_time": 28,
+      "end_time": 35,
+      "priority": "ROUTINE"
+    }
+  ],
+  "metrics": {
+    "total_time": 45,
+    "efficiency": 2.2222,
+    "conflicts": 0,
+    "samples_scheduled": 20,
+    "total_samples": 20,
+    "success_rate": 100.0
+  },
+  "conflicts": [],
+  "metadata": {
+    "execution_time_seconds": 0.004,
+    "strategy": "Priority-Based Scheduler (STAT > URGENT > ROUTINE)",
+    "concurrent_mode": true,
+    "version": "3.0.0"
+  }
+}

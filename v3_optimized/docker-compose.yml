@@ -1,0 +1,94 @@
+# 🐳 Docker Compose - Lab Planner V3
+# Version: 3.0
+
+version: '3.8'
+
+services:
+  # ============================================
+  # Service principal : Lab Planner V3
+  # ============================================
+  lab-planner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    
+    container_name: lab-planner-v3
+    
+    # Redémarrage automatique en cas d'échec
+    restart: unless-stopped
+    
+    # Variables d'environnement
+    environment:
+      - LOG_LEVEL=${LOG_LEVEL:-INFO}
+      - WORKERS=${WORKERS:-4}
+      - PYTHONUNBUFFERED=1
+    
+    # Volumes pour persister les résultats
+    volumes:
+      - ./output:/app/output
+      - ./logs:/app/logs
+      - ./docs:/app/docs:ro  # Read-only pour les docs
+    
+    # Limitation des ressources (production)
+    deploy:
+      resources:
+        limits:
+          cpus: '2.0'
+          memory: 512M
+        reservations:
+          cpus: '1.0'
+          memory: 256M
+    
+    # Logging configuré
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "3"
+    
+    # Réseau
+    networks:
+      - labplanner-network
+
+  # ============================================
+  # Service de monitoring (optionnel - commenté)
+  # ============================================
+  # prometheus:
+  #   image: prom/prometheus:latest
+  #   container_name: prometheus
+  #   volumes:
+  #     - ./monitoring/prometheus.yml:/etc/prometheus/prometheus.yml
+  #   ports:
+  #     - "9090:9090"
+  #   networks:
+  #     - labplanner-network
+
+  # ============================================
+  # Service de visualisation (optionnel - commenté)
+  # ============================================
+  # grafana:
+  #   image: grafana/grafana:latest
+  #   container_name: grafana
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - GF_SECURITY_ADMIN_PASSWORD=admin
+  #   networks:
+  #     - labplanner-network
+
+# ============================================
+# Réseaux
+# ============================================
+networks:
+  labplanner-network:
+    driver: bridge
+    name: labplanner-network
+
+# ============================================
+# Volumes persistants
+# ============================================
+volumes:
+  output-data:
+    driver: local
+  log-data:
+    driver: local

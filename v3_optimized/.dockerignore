@@ -1,0 +1,28 @@
+# Ignorer les fichiers Docker locaux
+.env
+
+# Ignorer les volumes de sortie générés
+output/
+logs/
+*.log
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+
+# Tests
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db

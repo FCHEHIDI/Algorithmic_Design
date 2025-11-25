@@ -1,0 +1,15 @@
+# Requirements - Lab Planner V3
+# Version: 3.0
+# Python: >=3.8
+
+# Pour l'instant, V3 utilise uniquement la bibliothèque standard Python
+# Aucune dépendance externe requise !
+
+# Dépendances futures potentielles (commentées) :
+# numpy>=1.24.0          # Pour calculs matriciels avancés
+# pandas>=2.0.0          # Pour analyse de données
+# fastapi>=0.104.0       # Pour API REST
+# uvicorn>=0.24.0        # Pour serveur ASGI
+# pydantic>=2.5.0        # Pour validation avancée
+# redis>=5.0.0           # Pour cache distribué
+# sqlalchemy>=2.0.0      # Pour persistance base de données
