@@ -17,25 +17,43 @@ Projet académique démontrant l'**évolution d'un algorithme** depuis une impl�
 ```
 Algorithmic_Design/
 │
-├── 🌿 feature/brute-force-approach       ← Versions 1 & 2 (procédurales)
-│   └── BruteForceApproach/
-│       ├── planify_lab.py                # V1 : Brute Force O(S×T×E)
-│       ├── planify_next_lab.py           # V2 : Indexée O(S+T+E)
-│       ├── LIMITATIONS_V1.md             # Analyse pédagogique V1
-│       ├── LIMITATIONS_V2.md             # Analyse pédagogique V2
-│       └── README.md                     # Documentation complète
+├── 📁 v1_brute_force/                    ← Version 1 (Brute Force)
+│   ├── planify_lab.py                    # Implémentation O(S×T×E)
+│   ├── LIMITATIONS_V1.md                 # Analyse limitations
+│   ├── docs/                             # Documentation détaillée
+│   └── README.md                         # Guide V1
 │
-└── 🌿 feature/optimized-modular-approach ← Version 3 (OOP + Docker)
-    └── v3_optimized/
-        ├── lab_planner/                  # Package modulaire (4 couches)
-        │   ├── domain/                   # Modèles métier
-        │   ├── resources/                # Gestion ressources
-        │   ├── scheduling/               # Stratégies d'ordonnancement
-        │   └── orchestration/            # Façade + validation
-        ├── Dockerfile                    # Multi-stage build
-        ├── docker-compose.yml            # Orchestration
-        └── README.md                     # Documentation exhaustive
+├── 📁 v2_indexed/                        ← Version 2 (Indexed)
+│   ├── planify_next_lab.py               # Implémentation O(S+T+E)
+│   ├── LIMITATIONS_V2.md                 # Analyse limitations
+│   └── README.md                         # Guide V2
+│
+├── 📁 v3_optimized/                      ← Version 3 (OOP + Docker)
+│   ├── lab_planner/                      # Package modulaire (4 couches)
+│   │   ├── domain/                       # Modèles métier
+│   │   ├── resources/                    # Gestion ressources
+│   │   ├── scheduling/                   # Stratégies d'ordonnancement
+│   │   └── orchestration/                # Façade + validation
+│   ├── Dockerfile                        # Multi-stage build
+│   ├── docker-compose.yml                # Orchestration
+│   ├── docs/                             # Documentation complète
+│   └── README.md                         # Guide V3
+│
+├── 📁 c_native_kernel/                   ← C Native (Medical RT)
+│   ├── kernel_scheduler.h                # Header avec structures
+│   ├── kernel_scheduler.c                # Implémentation <100µs
+│   ├── Makefile                          # Production build
+│   ├── DEPLOYMENT_GUIDE.md               # Guide CentOS RT
+│   └── PERFORMANCE_COMPARISON.md         # Python vs C (100x)
+│
+└── 📁 BruteForceApproach/                ← Archive (legacy)
+    └── [fichiers originaux]
 ```
+
+### 🌿 Branches Git
+
+- **`feature/brute-force-approach`** : V1 originale
+- **`feature/optimized-modular-approach`** : V2 + V3 + C native
 
 ---
 
@@ -43,8 +61,8 @@ Algorithmic_Design/
 
 ### 📕 Version 1 : Brute Force (Baseline)
 
-**Branche** : `feature/brute-force-approach`  
-**Fichier** : `BruteForceApproach/planify_lab.py`
+**Dossier** : `v1_brute_force/`  
+**Fichier** : `planify_lab.py`
 
 #### Caractéristiques
 
@@ -68,14 +86,14 @@ for sample in samples:           # 20 itérations
 
 Comprendre pourquoi les **boucles imbriquées** créent une explosion combinatoire inutilisable en production.
 
-➡️ [Lire l'analyse complète des limitations V1](BruteForceApproach/LIMITATIONS_V1.md)
+➡️ [Lire l'analyse complète des limitations V1](v1_brute_force/LIMITATIONS_V1.md)
 
 ---
 
 ### 📗 Version 2 : Approche Indexée (Optimisation)
 
-**Branche** : `feature/brute-force-approach`  
-**Fichier** : `BruteForceApproach/planify_next_lab.py`
+**Dossier** : `v2_indexed/`  
+**Fichier** : `planify_next_lab.py`
 
 #### Caractéristiques
 
@@ -108,13 +126,12 @@ for priority in ['STAT', 'URGENT', 'ROUTINE']:
 
 Comprendre l'importance des **structures de données** (hash tables) pour transformer un algorithme lent en algorithme rapide.
 
-➡️ [Lire l'analyse complète des limitations V2](BruteForceApproach/LIMITATIONS_V2.md)
+➡️ [Lire l'analyse complète des limitations V2](v2_indexed/LIMITATIONS_V2.md)
 
 ---
 
 ### 📘 Version 3 : Architecture OOP Modulaire (Production)
 
-**Branche** : `feature/optimized-modular-approach`  
 **Dossier** : `v3_optimized/`
 
 #### Caractéristiques
@@ -202,23 +219,20 @@ Comprendre comment construire une **architecture professionnelle** maintenable e
 #### V1 - Brute Force
 
 ```powershell
-git checkout feature/brute-force-approach
-cd BruteForceApproach
+cd v1_brute_force
 python planify_lab.py
 ```
 
 #### V2 - Indexée
 
 ```powershell
-git checkout feature/brute-force-approach
-cd BruteForceApproach
+cd v2_indexed
 python planify_next_lab.py
 ```
 
 #### V3 - OOP Modulaire
 
 ```powershell
-git checkout feature/optimized-modular-approach
 cd v3_optimized
 python main.py
 ```
@@ -226,7 +240,6 @@ python main.py
 ### Option 2 : Docker (V3 uniquement)
 
 ```powershell
-git checkout feature/optimized-modular-approach
 cd v3_optimized
 
 # Construire l'image
@@ -245,13 +258,13 @@ docker-compose up
 
 ### Guides d'Analyse
 
-- [**LIMITATIONS_V1.md**](BruteForceApproach/LIMITATIONS_V1.md) : Analyse détaillée des faiblesses de V1
+- [**v1_brute_force/LIMITATIONS_V1.md**](v1_brute_force/LIMITATIONS_V1.md) : Analyse détaillée des faiblesses de V1
   - Complexité O(S×T×E) catastrophique
   - Architecture monolithique
   - Pas de gestion d'erreurs robuste
   - Comparaison avec V2/V3
 
-- [**LIMITATIONS_V2.md**](BruteForceApproach/LIMITATIONS_V2.md) : Points forts et limitations de V2
+- [**v2_indexed/LIMITATIONS_V2.md**](v2_indexed/LIMITATIONS_V2.md) : Points forts et limitations de V2
   - Optimisation algorithmique (95% gain)
   - Toujours procédural (pas OOP)
   - Pas de concurrence
@@ -259,7 +272,8 @@ docker-compose up
 
 ### Guides Techniques
 
-- [**BruteForceApproach/README.md**](BruteForceApproach/README.md) : Documentation complète V1/V2
+- [**v1_brute_force/README.md**](v1_brute_force/README.md) : Documentation V1 complète
+- [**v2_indexed/README.md**](v2_indexed/README.md) : Documentation V2 complète
   - Explications pédagogiques (hash tables, complexité)
   - Benchmarks détaillés
   - Cas d'usage appropriés
@@ -270,6 +284,21 @@ docker-compose up
   - SOLID avec exemples
   - Concurrence (ThreadPool vs Multiprocessing)
   - Docker (multi-stage build, healthcheck)
+
+### Guides Avancés
+
+- [**c_native_kernel/DEPLOYMENT_GUIDE.md**](c_native_kernel/DEPLOYMENT_GUIDE.md) : Déploiement médical CentOS RT
+  - Configuration matérielle (Dell R740, Xeon, ECC RAM)
+  - BIOS hardening + CPU isolation
+  - Systemd service RT priority 99
+  - Certification IEC 62304 + FDA 21 CFR Part 11
+  - Monitoring Prometheus + Grafana
+
+- [**c_native_kernel/PERFORMANCE_COMPARISON.md**](c_native_kernel/PERFORMANCE_COMPARISON.md) : Python vs C Native
+  - Benchmarks détaillés (78µs vs 7.8ms = 100x)
+  - Analyse des causes (GIL, allocations, cache)
+  - Profiling (cProfile vs perf)
+  - ROI financier (économie 41k€ sur 5 ans)
 
 ### Guides Pratiques
 
