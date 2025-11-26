@@ -34,9 +34,13 @@ Algorithmic_Design/
 │   │   ├── resources/                    # Gestion ressources
 │   │   ├── scheduling/                   # Stratégies d'ordonnancement
 │   │   └── orchestration/                # Façade + validation
+│   ├── main.py                           # Point d'entrée
 │   ├── Dockerfile                        # Multi-stage build
 │   ├── docker-compose.yml                # Orchestration
+│   ├── LIMITATIONS_V3.md                 # Analyse limitations
 │   ├── docs/                             # Documentation complète
+│   │   ├── ARCHITECTURE_DETAILED.md      # Architecture (990 lignes)
+│   │   └── KERNEL_FEATURES_GUIDE.md      # Kernel features (900 lignes)
 │   └── README.md                         # Guide V3
 │
 ├── 📁 c_native_kernel/                   ← C Native (Medical RT)
@@ -270,6 +274,12 @@ docker-compose up
   - Pas de concurrence
   - Pas de tests unitaires
 
+- [**v3_optimized/LIMITATIONS_V3.md**](v3_optimized/LIMITATIONS_V3.md) : Points forts et limitations de V3
+  - Architecture OOP complète (4 couches)
+  - Stratégies interchangeables (extensibilité infinie)
+  - Concurrence 4x speedup
+  - Limitations : persistance, API REST, config externe
+
 ### Guides Techniques
 
 - [**v1_brute_force/README.md**](v1_brute_force/README.md) : Documentation V1 complète
@@ -278,8 +288,14 @@ docker-compose up
   - Benchmarks détaillés
   - Cas d'usage appropriés
 
-- [**v3_optimized/README.md**](v3_optimized/README.md) : Documentation exhaustive V3
-  - Architecture en couches (400+ lignes)
+- [**v3_optimized/README.md**](v3_optimized/README.md) : Documentation V3 concise
+  - Caractéristiques OOP et kernel features
+  - Benchmarks comparatifs
+  - Architecture simplifiée
+  - Utilisation et Docker
+
+- [**v3_optimized/docs/ARCHITECTURE_DETAILED.md**](v3_optimized/docs/ARCHITECTURE_DETAILED.md) : Architecture exhaustive V3 (990 lignes)
+  - Architecture en couches détaillée
   - Design Patterns expliqués
   - SOLID avec exemples
   - Concurrence (ThreadPool vs Multiprocessing)

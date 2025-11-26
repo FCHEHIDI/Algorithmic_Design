@@ -1,191 +1,54 @@
-# 🟢 Version 3 : OOP Modular Architecture
+# 🏗️ Lab Planner V3 - Architecture Modulaire Optimisée
 
-## 📋 Description
+## 🎯 Vue d'Ensemble
 
-**Troisième itération** avec refonte architecturale complète pour la production.
+Système professionnel de planification de laboratoire avec :
+- **Architecture OOP** (10 classes spécialisées)
+- **Principes SOLID** (tous respectés)
+- **Exécution concurrente** (ThreadPoolExecutor)
+- **Complexité O(S+T+E)** (95% de réduction vs brute force)
+- **Dockerisable** pour déploiement en production
 
-Architecture orientée objet avec 4 couches, design patterns (Strategy, Facade), et exécution concurrente.
+### 🌟 Pourquoi V3 ?
 
-## 📂 Contenu
+Après deux itérations (V1 brute force, V2 indexée), **V3** apporte une refonte architecturale complète :
 
-- **`lab_planner/`** : Package principal avec 4 couches (Domain, Resources, Scheduling, Orchestration)
-- **`main.py`** : Point d'entrée avec tests et benchmarks
-- **`Dockerfile`** : Conteneurisation multi-stage
-- **`docker-compose.yml`** : Orchestration avec monitoring
-- **`docs/`** : Documentation détaillée
-  - **`ARCHITECTURE_DETAILED.md`** : Architecture complète (990 lignes)
-  - **`KERNEL_FEATURES_GUIDE.md`** : Guide des features kernel
+| Aspect | V1 | V2 | V3 |
+|--------|----|----|-----|
+| **Performance** | ❌ | ✅ | ✅ |
+| **Architecture** | ❌ | ⚠️ | ✅ |
+| **Extensibilité** | ❌ | ❌ | ✅ |
+| **Production-ready** | ❌ | ⚠️ | ✅ |
 
-## ⚙️ Caractéristiques
+V3 combine les **performances de V2** avec une **architecture professionnelle** adaptée à un environnement de production.
 
-### Algorithme
-- **Complexité** : O(S + T + E) - Identique V2 🚀
-- **Stratégies** : 2 implémentations (Priority, Greedy) + Kernel-inspired
-- **Concurrence** : ThreadPoolExecutor (4 workers)
-- **Kernel Features** : Preemption, Aging, Deadlock Detection, Load Balancing
-
-### Architecture
-- ✅ 4 couches OOP (Domain, Resources, Scheduling, Orchestration)
-- ✅ 10 classes spécialisées avec responsabilités claires
-- ✅ SOLID complet (tous les principes respectés)
-- ✅ Design Patterns (Strategy, Facade, Generic Types)
-- ✅ Tests unitaires (pytest)
-- ✅ Docker production-ready
-
-## 📊 Performances
-
-| Métrique | Valeur | vs V2 | vs V1 |
-|----------|--------|-------|-------|
-| **Complexité temporelle** | O(S + T + E) | Identique | **100x meilleur** |
-| **Temps (20 samples, séq.)** | ~15 ms | Similaire | **50% plus rapide** |
-| **Temps (20 samples, conc.)** | ~4 ms | **4x plus rapide** | **100x plus rapide** |
-| **Maintenabilité** | ⭐⭐⭐⭐⭐ (5/5) | Excellente | Parfaite |
-| **Extensibilité** | ∞ stratégies | **Infinie** | **Infinie** |
-
-## ✅ Améliorations vs V2
-
-### 1. Architecture en 4 Couches
-```python
-# V2: Procédural
-result = planify_next_lab(samples, techs, equips)
-
-# V3: OOP avec stratégies
-planner = LabPlanner(strategy=PriorityScheduler(concurrent=True))
-result = planner.planify(samples, techs, equips)
-```
-
-### 2. Stratégies Interchangeables
-```python
-# Stratégie Priority (par défaut)
-planner = LabPlanner(strategy=PriorityScheduler())
-
-# Stratégie Greedy (minimise temps total)
-planner = LabPlanner(strategy=GreedyScheduler())
-
-# Extensible: créer votre propre stratégie
-class CustomScheduler(SchedulingStrategy):
-    def schedule(self, ...): ...
-```
-
-### 3. Exécution Concurrente
-```python
-# Séquentiel (petits datasets)
-scheduler = PriorityScheduler(concurrent=False)  # ~15ms
-
-# Concurrent (gros datasets)
-scheduler = PriorityScheduler(concurrent=True)   # ~4ms (4x speedup!)
-```
-
-### 4. Kernel-Inspired Features
-```python
-# Préemption STAT
-planner = LabPlanner(
-    strategy=KernelScheduler(
-        enable_preemption=True,
-        enable_aging=True,
-        enable_deadlock_detection=True,
-        enable_load_balancing=True
-    )
-)
-```
-
-## 🏗️ Architecture Simplifiée
+## 🏗️ Architecture
 
 ```
-┌─────────────────────────┐
-│  ORCHESTRATION          │  ← LabPlanner (façade utilisateur)
-│  - Validation entrées   │
-│  - Orchestration        │
-└──────────┬──────────────┘
-           │
-┌──────────▼──────────────┐
-│  SCHEDULING             │  ← PriorityScheduler, GreedyScheduler, KernelScheduler
-│  - Stratégies           │
-│  - Logique métier       │
-└──────────┬──────────────┘
-           │
-┌──────────▼──────────────┐
-│  RESOURCES              │  ← ResourceManager, ResourcePool<T>
-│  - Gestion ressources   │
-│  - Pools génériques     │
-└──────────┬──────────────┘
-           │
-┌──────────▼──────────────┐
-│  DOMAIN                 │  ← Sample, Technician, Equipment
-│  - Modèles métier       │
-│  - Value Objects        │
-└─────────────────────────┘
+v3_optimized/
+├── lab_planner/                    # Package principal
+│   ├── __init__.py                # Point d'entrée (LabPlanner)
+│   ├── domain/                    # Couche métier
+│   │   └── models.py             # Entités: Sample, Technician, Equipment
+│   ├── resources/                 # Gestion des ressources
+│   │   ├── pool.py               # ResourcePool<T> générique
+│   │   └── manager.py            # ResourceManager (façade)
+│   ├── scheduling/                # Moteur de planification
+│   │   ├── schedule.py           # Agrégat Schedule
+│   │   └── strategies.py         # Stratégies d'ordonnancement
+│   └── orchestration/             # Orchestration
+│       ├── validator.py          # Validation des entrées
+│       └── planner.py            # LabPlanner (façade principale)
+├── main.py                        # Point d'entrée + tests
+├── Dockerfile                     # Image Docker
+├── docker-compose.yml             # Orchestration multi-services
+├── requirements.txt               # Dépendances (vide pour l'instant)
+└── README.md                      # Ce fichier
 ```
 
-## 🚫 Limitations Connues
+### 🎓 Architecture en Couches Expliquée
 
-1. **Persistance** : Données en mémoire (pas de DB)
-2. **API** : Pas d'interface REST (FastAPI)
-3. **Configuration** : Hardcodée (pas de YAML externe)
-4. **Monitoring** : Métriques basiques (pas Prometheus/Grafana)
-5. **Contraintes avancées** : Pauses, maintenance équipements absentes
-
-## 🐳 Docker
-
-### Build et Run
-```bash
-# Build production
-docker build -t lab-planner:v3 .
-
-# Run
-docker run --rm lab-planner:v3
-
-# Docker Compose
-docker-compose up
-```
-
-### Structure Multi-Stage
-- **Stage 1** : Base Python 3.11-slim
-- **Stage 2** : Build (installation dépendances)
-- **Stage 3** : Runtime (image finale ~150MB)
-
-## 📚 Documentation Complète
-
-➡️ [Architecture détaillée (990 lignes)](docs/ARCHITECTURE_DETAILED.md)  
-➡️ [Kernel Features Guide (900 lignes)](docs/KERNEL_FEATURES_GUIDE.md)
-
-## 💡 Utilisation
-
-```python
-from lab_planner import LabPlanner
-from lab_planner.scheduling.priority_scheduler import PriorityScheduler
-
-# Option 1: Stratégie par défaut
-planner = LabPlanner()
-
-# Option 2: Stratégie personnalisée + concurrent
-planner = LabPlanner(strategy=PriorityScheduler(concurrent=True))
-
-# Planification
-result = planner.planify(samples, technicians, equipment)
-
-# Résultats
-print(f"Scheduled: {len(result['schedule'])} samples")
-print(f"Total time: {result['metrics']['total_time']} min")
-print(f"Efficiency: {result['metrics']['efficiency']:.2%}")
-```
-
-## ➡️ Évolution Future
-
-- [ ] API REST (FastAPI)
-- [ ] Base de données (SQLAlchemy + PostgreSQL)
-- [ ] Configuration YAML externe
-- [ ] Monitoring (Prometheus + Grafana)
-- [ ] Contraintes INTERMEDIATE (pauses, maintenance)
-- [ ] Machine Learning (prédiction temps réels)
-
----
-
-**Status** : ✅ Production-Ready (charges élevées >5000 samples/jour)
-
-**Branche Git** : `feature/optimized-modular-approach`
-
-**Déploiement** : Docker ready avec multi-stage build
+V3 suit une **architecture en 4 couches** inspirée du **Domain-Driven Design (DDD)** :
 
 ```
 ┌─────────────────────────────────────────┐
