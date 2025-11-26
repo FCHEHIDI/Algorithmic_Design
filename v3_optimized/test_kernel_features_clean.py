@@ -1,6 +1,6 @@
 """
 Tests du Kernel Scheduler
-Dmontre les 4 features kernel : Premption, Aging, Deadlock Detection, Load Balancing
+Démontre les 4 features kernel : Préemption, Aging, Deadlock Detection, Load Balancing
 """
 
 import logging
@@ -23,7 +23,7 @@ def test_preemption():
     """
     TEST 1 : PREMPTION
     
-    Scnario : Un chantillon STAT arrive pendant qu'un URGENT est en cours.
+    Scnario : Un échantillon STAT arrive pendant qu'un URGENT est en cours.
     Attendu : L'URGENT est interrompu, STAT trait, puis URGENT reprend.
     """
     print("\n" + "="*80)
@@ -57,7 +57,7 @@ def test_preemption():
         {"id": "EQUIP01", "type": "BLOOD", "available_from": 480}
     ]
     
-    # Configuration avec premption active
+    # Configuration avec préemption active
     config = KernelSchedulerConfig(
         enable_preemption=True,
         preemption_policy=PreemptionPolicy.STAT_ONLY,
@@ -98,7 +98,7 @@ def test_aging():
     print("="*80)
     
     samples = [
-        # ROUTINE arriv tt (08:00) mais devrait attendre
+        # ROUTINE arrive tôt (08:00) mais devrait attendre
         {
             "id": "S001_ROUTINE_OLD",
             "type": "BLOOD",
@@ -132,10 +132,10 @@ def test_aging():
         {"id": "EQUIP01", "type": "BLOOD", "available_from": 570}
     ]
     
-    # Configuration avec aging activ (seuil 60 min)
+    # Configuration avec aging active (seuil 60 min)
     aging_config = AgingConfig(
         enabled=True,
-        routine_to_urgent=60,  # ROUTINE  URGENT aprs 60 min
+        routine_to_urgent=60,  # ROUTINE  URGENT après 60 min
         urgent_to_stat=120
     )
     
@@ -180,7 +180,7 @@ def test_load_balancing():
     print("TEST 3 : LOAD BALANCING")
     print("="*80)
     
-    # 10 chantillons URGENT de dures variables
+    # 10 échantillons URGENT de durées variables
     samples = [
         {"id": f"S{i:03d}", "type": "BLOOD", "priority": "URGENT", 
          "ready_time": 480, "processing_time": 10 + (i * 5)}
@@ -194,14 +194,14 @@ def test_load_balancing():
         {"id": "TECH03", "speciality": "BLOOD", "available_from": 480}
     ]
     
-    # 3 quipements BLOOD
+    # 3 équipements BLOOD
     equipment = [
         {"id": "EQUIP01", "type": "BLOOD", "available_from": 480},
         {"id": "EQUIP02", "type": "BLOOD", "available_from": 480},
         {"id": "EQUIP03", "type": "BLOOD", "available_from": 480}
     ]
     
-    # Configuration avec load balancing activ
+    # Configuration avec load balancing active
     config = KernelSchedulerConfig(
         enable_preemption=False,
         enable_aging=False,
@@ -238,13 +238,13 @@ def test_load_balancing():
         print(f"  Coeff. Variation : {lb_stats.get('coefficient_variation', 0):.1f}% "
               f"({'excellent' if lb_stats.get('coefficient_variation', 100) < 15 else 'bon' if lb_stats.get('coefficient_variation', 100) < 30 else 'moyen'})")
         
-        # Dtails par technicien
+        # Détails par technicien
         tech_details = lb_stats.get('technician_details', {})
         if tech_details:
-            print("\n  Dtails par technicien :")
+            print("\n  détails par technicien :")
             for tech_id, details in tech_details.items():
                 print(f"    {tech_id} : "
-                      f"{details['sample_count']} chantillons, "
+                      f"{details['sample_count']} échantillons, "
                       f"{details['total_duration']} min, "
                       f"util={details['utilization_rate']:.1f}%")
     
@@ -256,8 +256,8 @@ def test_all_features_combined():
     """
     TEST 4 : TOUTES LES FEATURES COMBINES
     
-    Scnario complexe avec :
-    - Premption (STAT arrive)
+    Scénario complexe avec :
+    - Préemption (STAT arrive)
     - Aging (ROUTINE anciens)
     - Load Balancing (plusieurs techniciens)
     - Potentiel deadlock
@@ -267,7 +267,7 @@ def test_all_features_combined():
     print("="*80)
     
     samples = [
-        # ROUTINE anciens (devraient tre boosts)
+        # ROUTINE anciens (devraient être boostés)
         {"id": "S001_ROUTINE_OLD", "type": "BLOOD", "priority": "ROUTINE", 
          "ready_time": 480, "processing_time": 25},
         {"id": "S002_ROUTINE_OLD", "type": "URINE", "priority": "ROUTINE", 
@@ -281,11 +281,11 @@ def test_all_features_combined():
         {"id": "S005_URGENT", "type": "BLOOD", "priority": "URGENT", 
          "ready_time": 560, "processing_time": 18},
         
-        # STAT qui devrait prempter
+        # STAT qui devrait préempter
         {"id": "S006_STAT", "type": "BLOOD", "priority": "STAT", 
          "ready_time": 570, "processing_time": 10},
         
-        # Plus d'chantillons pour load balancing
+        # Plus d'échantillons pour load balancing
         {"id": "S007_URGENT", "type": "URINE", "priority": "URGENT", 
          "ready_time": 590, "processing_time": 22},
         {"id": "S008_ROUTINE", "type": "BLOOD", "priority": "ROUTINE", 
@@ -305,7 +305,7 @@ def test_all_features_combined():
         {"id": "EQUIP_URINE_1", "type": "URINE", "available_from": 540},
     ]
     
-    # Configuration complte
+    # Configuration complète
     aging_config = AgingConfig(
         enabled=True,
         routine_to_urgent=60,
@@ -325,16 +325,16 @@ def test_all_features_combined():
     planner = LabPlanner(strategy=KernelScheduler(config))
     result = planner.planify(samples, technicians, equipment)
     
-    print("\n Planning Rsultant :")
+    print("\n Planning Résultant :")
     for i, entry in enumerate(result['schedule'], 1):
         print(f"  {i:2}. {entry['sample_id']:20} : "
               f"{entry['start_time']:3}{entry['end_time']:3} min "
               f"| {entry['technician_id']:15} + {entry['equipment_id']:15}")
     
-    print(f"\n Mtriques Compltes :")
-    print(f"  chantillons planifis : {result['metrics']['total_samples']}")
+    print(f"\n Métriques Complètes :")
+    print(f"  échantillons planifiés : {result['metrics']['total_samples']}")
     print(f"  Temps total : {result['metrics']['total_time']} min")
-    print(f"  Efficacit : {result['metrics']['efficiency']:.1f}%")
+    print(f"  Efficacité : {result['metrics']['efficiency']:.1f}%")
     print(f"  Conflits : {result['metrics']['conflicts']}")
     
     if 'kernel_features' in result['metrics']:
@@ -355,9 +355,9 @@ def test_all_features_combined():
         if 'load_balancing' in kf:
             lb = kf['load_balancing']
             print(f"     Coefficient de variation : {lb.get('coefficient_variation', 0):.1f}%")
-            print(f"       Dsquilibre de charge : {lb.get('load_imbalance', 0):.0f} min")
+            print(f"       Déséquilibre de charge : {lb.get('load_imbalance', 0):.0f} min")
     
-    print("\n[OK] Test Features Combinees termine")
+    print("\n[OK] Test Features Combinées terminé")
     print("="*80)
 
 

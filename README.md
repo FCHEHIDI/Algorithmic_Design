@@ -1,488 +1,345 @@
-# 🧪 Algorithmic Design - Planificateur de Laboratoire
+# 🧪 Lab Planner - Évolution d'Algorithme (V1 → V2 → V3 → C)
 
-## 🎯 Vue d'Ensemble
+> **Contexte Professionnel** : Projet d'évaluation stage - Démonstration de l'évolution d'un algorithme de planification depuis une implémentation naïve jusqu'à une solution de production avec kernel real-time.
 
-Projet académique démontrant l'**évolution d'un algorithme** depuis une implémentation naïve jusqu'à une architecture professionnelle de production.
+## 📋 Vue d'Ensemble
 
-**Contexte** : Planifier l'analyse d'échantillons de laboratoire en respectant :
-- ✅ Priorités médicales (STAT > URGENT > ROUTINE)
-- ✅ Compatibilités technicien-échantillon
-- ✅ Disponibilités des ressources
-- ✅ Optimisation du temps total
+Système de planification d'analyses de laboratoire médical respectant :
+- ✅ **Priorités médicales** (STAT > URGENT > ROUTINE)
+- ✅ **Compatibilités** technicien-échantillon-équipement
+- ✅ **Disponibilités** des ressources en temps réel
+- ✅ **Optimisation** du temps total et charge de travail
 
 ---
 
-## 📂 Structure du Projet
+## 🗂️ Structure du Projet
 
 ```
 Algorithmic_Design/
 │
-├── 📁 v1_brute_force/                    ← Version 1 (Brute Force)
-│   ├── planify_lab.py                    # Implémentation O(S×T×E)
-│   ├── LIMITATIONS_V1.md                 # Analyse limitations
-│   ├── docs/                             # Documentation détaillée
-│   └── README.md                         # Guide V1
+├── 📁 v1_brute_force/                    # Version 1 - Brute Force O(S×T×E)
+│   ├── planify_lab.py                    # Fonction SIMPLE: planify_lab()
+│   ├── test_v1_dataset.py                # Tests dataset 10/4/3
+│   ├── output-example-simple.json        # Exemple output (6/10 planifiés)
+│   ├── TEST_RESULTS.md                   # Documentation limitations
+│   ├── LIMITATIONS_V1.md                 # Analyse complexité
+│   └── README.md                         # Guide d'utilisation V1
 │
-├── 📁 v2_indexed/                        ← Version 2 (Indexed)
-│   ├── planify_next_lab.py               # Implémentation O(S+T+E)
-│   ├── LIMITATIONS_V2.md                 # Analyse limitations
-│   └── README.md                         # Guide V2
+├── 📁 v2_indexed/                        # Version 2 - Indexed O(S+T+E)
+│   ├── planify_next_lab.py               # Optimisation indexation
+│   ├── LIMITATIONS_V2.md                 # Analyse gains performance
+│   └── README.md                         # Guide d'utilisation V2
 │
-├── 📁 v3_optimized/                      ← Version 3 (OOP + Docker)
+├── 📁 v3_optimized/                      # Version 3 - OOP + Kernel Features
 │   ├── lab_planner/                      # Package modulaire (4 couches)
-│   │   ├── domain/                       # Modèles métier
-│   │   ├── resources/                    # Gestion ressources
-│   │   ├── scheduling/                   # Stratégies d'ordonnancement
+│   │   ├── domain/                       # Modèles métier (Sample, Technician, etc.)
+│   │   ├── resources/                    # Gestion pools ressources
+│   │   ├── scheduling/                   # Stratégies (Priority, Kernel)
 │   │   └── orchestration/                # Façade + validation
-│   ├── main.py                           # Point d'entrée
+│   ├── planify_lab_wrapper.py            # Fonction INTERMEDIATE: planifyLab()
+│   ├── tests/                            # Tests conformité INTERMEDIATE
+│   │   └── test_intermediate_conformity.py  # 5 tests (20/8/5 dataset)
+│   ├── test_kernel_features_clean.py     # Tests kernel (preemption, aging, etc.)
+│   ├── output/
+│   │   ├── output-example-intermediate.json  # Exemple output (20/20 planifiés)
+│   │   └── test-results.txt              # Résultats pytest (5/5 passed)
+│   ├── docs/
+│   │   ├── ARCHITECTURE_DETAILED.md      # Architecture OOP complète
+│   │   └── KERNEL_FEATURES_GUIDE.md      # Guide features kernel
 │   ├── Dockerfile                        # Multi-stage build
-│   ├── docker-compose.yml                # Orchestration
-│   ├── LIMITATIONS_V3.md                 # Analyse limitations
-│   ├── docs/                             # Documentation complète
-│   │   ├── ARCHITECTURE_DETAILED.md      # Architecture (990 lignes)
-│   │   └── KERNEL_FEATURES_GUIDE.md      # Kernel features (900 lignes)
-│   └── README.md                         # Guide V3
+│   ├── docker-compose.yml                # Orchestration services
+│   ├── LIMITATIONS_V3.md                 # Analyse extensions futures
+│   └── README.md                         # Guide d'utilisation V3
 │
-├── 📁 c_native_kernel/                   ← C Native (Medical RT)
-│   ├── kernel_scheduler.h                # Header avec structures
+├── 📁 c_native_kernel/                   # Version C - Real-Time Medical
 │   ├── kernel_scheduler.c                # Implémentation <100µs
-│   ├── Makefile                          # Production build
-│   ├── DEPLOYMENT_GUIDE.md               # Guide CentOS RT
-│   └── PERFORMANCE_COMPARISON.md         # Python vs C (100x)
+│   ├── kernel_scheduler.h                # Header structures
+│   ├── Makefile                          # Build production
+│   ├── PERFORMANCE_COMPARISON.md         # Python vs C (100x faster)
+│   └── DEPLOYMENT_GUIDE.md               # Guide déploiement CentOS RT
 │
-└── 📁 BruteForceApproach/                ← Archive (legacy)
-    └── [fichiers originaux]
-```
-
-### 🌿 Branches Git
-
-- **`feature/brute-force-approach`** : V1 originale
-- **`feature/optimized-modular-approach`** : V2 + V3 + C native
-
----
-
-## 🎓 Parcours Pédagogique
-
-### 📕 Version 1 : Brute Force (Baseline)
-
-**Dossier** : `v1_brute_force/`  
-**Fichier** : `planify_lab.py`
-
-#### Caractéristiques
-
-- **Complexité** : O(S × T × E) - **catastrophique** !
-- **Architecture** : Monolithique (tout dans une fonction)
-- **Approche** : Boucles imbriquées naïves
-
-#### 🧮 Performance
-
-```python
-for sample in samples:           # 20 itérations
-    for tech in technicians:     # 8 itérations
-        for equip in equipment:  # 5 itérations
-            # Vérifier compatibilité
-# Total : 20 × 8 × 5 = 800 itérations 😱
-```
-
-**Temps d'exécution** : ~15ms pour 20 échantillons
-
-#### 🎯 Objectif Pédagogique
-
-Comprendre pourquoi les **boucles imbriquées** créent une explosion combinatoire inutilisable en production.
-
-➡️ [Lire l'analyse complète des limitations V1](v1_brute_force/LIMITATIONS_V1.md)
-
----
-
-### 📗 Version 2 : Approche Indexée (Optimisation)
-
-**Dossier** : `v2_indexed/`  
-**Fichier** : `planify_next_lab.py`
-
-#### Caractéristiques
-
-- **Complexité** : O(S + T + E) - **linéaire** ✅
-- **Architecture** : Procédurale structurée
-- **Approche** : Indexation à deux niveaux (Priorité → Type)
-
-#### 🚀 Performance
-
-```python
-# Étape 1 : Construire l'index (une fois)
-sample_index = build_sample_index(samples)      # 20 itérations
-tech_pools = build_resource_pools(techs)        # 8 itérations
-equip_pools = build_resource_pools(equips)      # 5 itérations
-
-# Étape 2 : Lookups O(1)
-for priority in ['STAT', 'URGENT', 'ROUTINE']:
-    samples = sample_index[priority]            # O(1) !
-    for sample in samples:
-        techs = tech_pools[sample.type]         # O(1) !
-        equips = equip_pools[sample.type]       # O(1) !
-
-# Total : 20 + 8 + 5 = 33 itérations ✅
-```
-
-**Gain** : **95.8% de réduction** (800 → 33 itérations)  
-**Temps d'exécution** : ~8ms pour 20 échantillons
-
-#### 🎯 Objectif Pédagogique
-
-Comprendre l'importance des **structures de données** (hash tables) pour transformer un algorithme lent en algorithme rapide.
-
-➡️ [Lire l'analyse complète des limitations V2](v2_indexed/LIMITATIONS_V2.md)
-
----
-
-### 📘 Version 3 : Architecture OOP Modulaire (Production)
-
-**Dossier** : `v3_optimized/`
-
-#### Caractéristiques
-
-- **Complexité** : O(S + T + E) - **maintenue**
-- **Architecture** : 4 couches OOP (Domain, Resources, Scheduling, Orchestration)
-- **Patterns** : Strategy, Facade, Generic Types, Value Objects
-- **Principes** : SOLID complet
-- **Concurrence** : ThreadPoolExecutor (4 workers)
-- **Docker** : Multi-stage build + docker-compose
-
-#### ⚡ Performance
-
-**Séquentiel** : ~15ms pour 20 échantillons  
-**Concurrent** : ~4ms pour 20 échantillons  
-**Speedup** : **3.75× plus rapide** 🚀
-
-#### 🏗️ Architecture en 4 Couches
+├── CONFORMITY_CHECKLIST.md               # Checklist évaluation (SIMPLE + INTERMEDIATE)
+├── MIGRATION_GUIDE.md                    # Guide navigation versions
+└── .gitignore                            # Ignore __pycache__, logs, outputs
 
 ```
-┌────────────────────────────────┐
-│  ORCHESTRATION (Facade)       │  ← LabPlanner (point d'entrée)
-└────────────┬───────────────────┘
-             │
-┌────────────▼───────────────────┐
-│  SCHEDULING (Business Logic)  │  ← PriorityScheduler, GreedyScheduler
-└────────────┬───────────────────┘
-             │
-┌────────────▼───────────────────┐
-│  RESOURCES (Infrastructure)   │  ← ResourceManager, ResourcePool<T>
-└────────────┬───────────────────┘
-             │
-┌────────────▼───────────────────┐
-│  DOMAIN (Core)                │  ← Sample, Technician, Equipment
-└────────────────────────────────┘
-```
-
-#### 🎯 Objectif Pédagogique
-
-Comprendre comment construire une **architecture professionnelle** maintenable et extensible avec :
-- Séparation des responsabilités (SOLID)
-- Stratégies interchangeables (extensibilité)
-- Exécution concurrente (scalabilité)
-- Dockerisation (déploiement)
-
-➡️ [Lire la documentation complète V3](v3_optimized/README.md)
-
----
-
-## 📊 Comparaison des Versions
-
-| Critère | V1 (Brute Force) | V2 (Indexée) | V3 (OOP) |
-|---------|------------------|--------------|----------|
-| **Complexité** | O(S×T×E) | O(S+T+E) ✅ | O(S+T+E) ✅ |
-| **Itérations (20 éch.)** | 800 😱 | 33 ✅ | 33 ✅ |
-| **Temps (20 éch.)** | ~15ms | ~8ms | ~4ms ⚡ |
-| **Architecture** | Monolithique ❌ | Procédurale ⚠️ | OOP ✅ |
-| **Tests** | Aucun ❌ | Aucun ❌ | Unitaires ✅ |
-| **SOLID** | Violé ❌ | Violé ⚠️ | Respecté ✅ |
-| **Stratégies** | 1 fixe ❌ | 1 fixe ❌ | Multiples ✅ |
-| **Concurrence** | Non ❌ | Non ❌ | Oui (4×) ✅ |
-| **Docker** | Non ❌ | Non ❌ | Oui ✅ |
-| **Production-ready** | ❌ | ⚠️ | ✅ |
-
-### 🎓 Leçons Clés
-
-1. **V1 → V2** : Une bonne **structure de données** transforme un algorithme
-   - Gain : **95% de réduction** d'itérations
-   - Hash tables (dictionnaires) permettent des lookups O(1)
-
-2. **V2 → V3** : Une bonne **architecture** rend le code maintenable
-   - Gain : **Extensibilité infinie** (nouvelles stratégies sans modifier le code)
-   - SOLID + Design Patterns = Code professionnel
-
-3. **V3 + Concurrence** : Le **parallélisme** démultiplie les performances
-   - Gain : **4× plus rapide** sur datasets moyens/grands
-   - ThreadPoolExecutor utilise les CPU multi-cœurs
 
 ---
 
 ## 🚀 Quick Start
 
-### Option 1 : Exécution Locale
+### 🔧 Prérequis
 
-#### V1 - Brute Force
+```bash
+# Python 3.11+
+python --version
 
-```powershell
+# Git
+git --version
+```
+
+### 📥 Installation
+
+```bash
+# Cloner le repository
+git clone https://github.com/FCHEHIDI/Algorithmic_Design.git
+cd Algorithmic_Design
+
+# Installer dépendances (pour V3)
+pip install pytest pytest-cov
+```
+
+---
+
+## 🎯 Exécution par Version
+
+### 📕 V1 - Brute Force (Niveau SIMPLE)
+
+**Dataset** : 10 samples, 4 technicians, 3 equipment
+
+```bash
 cd v1_brute_force
-python planify_lab.py
+
+# Exécuter avec dataset test
+python test_v1_dataset.py
+
+# Output: 6/10 samples planifiés (4 conflits attendus)
+# Voir: output-example-simple.json
 ```
 
-#### V2 - Indexée
+**Résultats attendus** :
+- ⚠️ 6/10 échantillons planifiés (40% conflits)
+- 📊 Complexité O(S×T×E) = 800 itérations
+- 📄 Limitations documentées dans `TEST_RESULTS.md`
 
-```powershell
+➡️ [Documentation V1 complète](v1_brute_force/README.md)
+
+---
+
+### 📗 V2 - Indexed (Optimisation)
+
+**Dataset** : 20 samples, 8 technicians, 5 equipment
+
+```bash
 cd v2_indexed
+
+# Exécuter avec dataset
 python planify_next_lab.py
+
+# Gain: 95.8% réduction itérations (800 → 33)
 ```
 
-#### V3 - OOP Modulaire
+**Résultats attendus** :
+- ✅ ~95% échantillons planifiés
+- 📊 Complexité O(S+T+E) = 33 itérations
+- 🚀 Gain performance 95.8%
 
-```powershell
+➡️ [Documentation V2 complète](v2_indexed/README.md)
+
+---
+
+### 📘 V3 - OOP + Kernel Features (Niveau INTERMEDIATE)
+
+**Dataset** : 20 samples, 8 technicians, 5 equipment
+
+#### Option 1 : Python Direct
+
+```bash
 cd v3_optimized
-python main.py
+
+# Exécuter wrapper INTERMEDIATE
+python planify_lab_wrapper.py
+
+# Output: output-example-intermediate.json
+# 20/20 échantillons planifiés, 0 conflits
 ```
 
-### Option 2 : Docker (V3 uniquement)
+#### Option 2 : Docker (Recommandé)
 
-```powershell
+```bash
 cd v3_optimized
 
-# Construire l'image
-docker build -t lab-planner-v3:latest .
+# Build et run
+docker-compose up --build
+
+# Logs disponibles dans logs/
+```
+
+#### Tests
+
+```bash
+cd v3_optimized
+
+# Tests conformité INTERMEDIATE (5 tests)
+pytest tests/test_intermediate_conformity.py -v
+
+# Tests kernel features (4 tests)
+python test_kernel_features_clean.py
+```
+
+**Résultats attendus** :
+- ✅ 20/20 échantillons planifiés (100%)
+- ✅ 5/5 tests INTERMEDIATE passent
+- ✅ Format JSON conforme (laboratory, schedule, metrics, metadata)
+- ✅ Kernel features : preemption, aging, load balancing, deadlock detection
+
+➡️ [Documentation V3 complète](v3_optimized/README.md)  
+➡️ [Architecture détaillée](v3_optimized/docs/ARCHITECTURE_DETAILED.md)  
+➡️ [Guide kernel features](v3_optimized/docs/KERNEL_FEATURES_GUIDE.md)
+
+---
+
+### 🔥 C Native - Real-Time Medical
+
+**Prérequis** : GCC, CentOS RT kernel
+
+```bash
+cd c_native_kernel
+
+# Compiler
+make clean && make
 
 # Exécuter
-docker run --rm lab-planner-v3:latest
+./scheduler_demo
 
-# Avec Docker Compose
-docker-compose up
+# Performance: <100µs (vs 8-15ms Python = 100x faster)
 ```
+
+➡️ [Guide déploiement](c_native_kernel/DEPLOYMENT_GUIDE.md)  
+➡️ [Comparaison performance](c_native_kernel/PERFORMANCE_COMPARISON.md)
+
+---
+
+## 📊 Comparaison des Versions
+
+| Critère | V1 Brute Force | V2 Indexed | V3 OOP | C Native |
+|---------|----------------|------------|--------|----------|
+| **Complexité** | O(S×T×E) | O(S+T+E) | O(S+T+E) | O(S+T+E) |
+| **Itérations** (20/8/5) | 800 | 33 | 33 | 33 |
+| **Temps exécution** | ~15ms | ~8ms | ~5ms | <0.1ms |
+| **Architecture** | Monolithique | Procédurale | OOP (4 layers) | Kernel RT |
+| **Concurrence** | ❌ | ❌ | ✅ ThreadPool | ✅ Native threads |
+| **Échantillons planifiés** | 60% (6/10) | 95% | 100% (20/20) | 100% |
+| **Features avancées** | ❌ | ❌ | ✅ Preemption, Aging, Load Balance | ✅ Toutes |
+| **Production ready** | ❌ | ⚠️ Partiel | ✅ Oui | ✅ Medical grade |
+
+---
+
+## 🎓 Objectifs Pédagogiques
+
+### 🔴 V1 → V2 : Comprendre l'Impact des Structures de Données
+
+**Problème** : Boucles imbriquées créent explosion combinatoire  
+**Solution** : Hash tables (dict) transforment O(n²) en O(1)  
+**Gain** : 95.8% réduction itérations
+
+### 🟢 V2 → V3 : Comprendre l'Importance de l'Architecture
+
+**Problème** : Code procédural difficile à maintenir, tester, étendre  
+**Solution** : OOP avec patterns (Strategy, Facade), SOLID principles  
+**Gain** : Maintenabilité, testabilité, extensibilité
+
+### 🔵 V3 → C : Comprendre les Contraintes Real-Time
+
+**Problème** : Python garbage collector imprévisible pour systèmes critiques  
+**Solution** : C natif avec gestion mémoire manuelle  
+**Gain** : Déterminisme temporel (<100µs garanti)
 
 ---
 
 ## 📚 Documentation
 
-### Guides d'Analyse
+### Guides d'Utilisation
+- [Guide V1 (SIMPLE)](v1_brute_force/README.md)
+- [Guide V2 (Optimisé)](v2_indexed/README.md)
+- [Guide V3 (INTERMEDIATE)](v3_optimized/README.md)
 
-- [**v1_brute_force/LIMITATIONS_V1.md**](v1_brute_force/LIMITATIONS_V1.md) : Analyse détaillée des faiblesses de V1
-  - Complexité O(S×T×E) catastrophique
-  - Architecture monolithique
-  - Pas de gestion d'erreurs robuste
-  - Comparaison avec V2/V3
+### Analyses Techniques
+- [Limitations V1](v1_brute_force/LIMITATIONS_V1.md)
+- [Limitations V2](v2_indexed/LIMITATIONS_V2.md)
+- [Limitations V3](v3_optimized/LIMITATIONS_V3.md)
+- [Architecture OOP Détaillée](v3_optimized/docs/ARCHITECTURE_DETAILED.md)
+- [Kernel Features Guide](v3_optimized/docs/KERNEL_FEATURES_GUIDE.md)
 
-- [**v2_indexed/LIMITATIONS_V2.md**](v2_indexed/LIMITATIONS_V2.md) : Points forts et limitations de V2
-  - Optimisation algorithmique (95% gain)
-  - Toujours procédural (pas OOP)
-  - Pas de concurrence
-  - Pas de tests unitaires
-
-- [**v3_optimized/LIMITATIONS_V3.md**](v3_optimized/LIMITATIONS_V3.md) : Points forts et limitations de V3
-  - Architecture OOP complète (4 couches)
-  - Stratégies interchangeables (extensibilité infinie)
-  - Concurrence 4x speedup
-  - Limitations : persistance, API REST, config externe
-
-### Guides Techniques
-
-- [**v1_brute_force/README.md**](v1_brute_force/README.md) : Documentation V1 complète
-- [**v2_indexed/README.md**](v2_indexed/README.md) : Documentation V2 complète
-  - Explications pédagogiques (hash tables, complexité)
-  - Benchmarks détaillés
-  - Cas d'usage appropriés
-
-- [**v3_optimized/README.md**](v3_optimized/README.md) : Documentation V3 concise
-  - Caractéristiques OOP et kernel features
-  - Benchmarks comparatifs
-  - Architecture simplifiée
-  - Utilisation et Docker
-
-- [**v3_optimized/docs/ARCHITECTURE_DETAILED.md**](v3_optimized/docs/ARCHITECTURE_DETAILED.md) : Architecture exhaustive V3 (990 lignes)
-  - Architecture en couches détaillée
-  - Design Patterns expliqués
-  - SOLID avec exemples
-  - Concurrence (ThreadPool vs Multiprocessing)
-  - Docker (multi-stage build, healthcheck)
-
-### Guides Avancés
-
-- [**c_native_kernel/DEPLOYMENT_GUIDE.md**](c_native_kernel/DEPLOYMENT_GUIDE.md) : Déploiement médical CentOS RT
-  - Configuration matérielle (Dell R740, Xeon, ECC RAM)
-  - BIOS hardening + CPU isolation
-  - Systemd service RT priority 99
-  - Certification IEC 62304 + FDA 21 CFR Part 11
-  - Monitoring Prometheus + Grafana
-
-- [**c_native_kernel/PERFORMANCE_COMPARISON.md**](c_native_kernel/PERFORMANCE_COMPARISON.md) : Python vs C Native
-  - Benchmarks détaillés (78µs vs 7.8ms = 100x)
-  - Analyse des causes (GIL, allocations, cache)
-  - Profiling (cProfile vs perf)
-  - ROI financier (économie 41k€ sur 5 ans)
-
-### Guides Pratiques
-
-- [**GUIDE_PUSH_GIT.md**](GUIDE_PUSH_GIT.md) : Guide complet pour pusher vers GitHub/GitLab
-  - Configuration remote
-  - Workflow de développement
-  - Bonnes pratiques Git
-  - Commandes de secours
+### Évaluation & Conformité
+- [Conformity Checklist](CONFORMITY_CHECKLIST.md) - SIMPLE + INTERMEDIATE
+- [Migration Guide](MIGRATION_GUIDE.md) - Navigation entre versions
 
 ---
 
-## 🎯 Cas d'Usage
+## 🧪 Tests
 
-### ✅ Utilisez V1 pour :
+### V1 - SIMPLE
+```bash
+cd v1_brute_force
+python test_v1_dataset.py
+# Résultat: 6/10 planifiés (limitations documentées)
+```
 
-- Apprentissage de l'algorithmie
-- Prototypage rapide (< 30 min)
-- Datasets minuscules (< 10 échantillons)
-- Démonstrations "comment NE PAS faire"
+### V3 - INTERMEDIATE
+```bash
+cd v3_optimized
 
-### ✅ Utilisez V2 pour :
+# Tests conformité (5 tests)
+pytest tests/test_intermediate_conformity.py -v
+# PASSED: planifyLab exists, 20/8/5 dataset, camelCase, HH:MM format, zero conflicts
 
-- Comprendre l'importance des structures de données
-- Benchmarking (comparer O(S×T×E) vs O(S+T+E))
-- Datasets moyens (10-100 échantillons)
-- Environnements non-critiques
-
-### ✅ Utilisez V3 pour :
-
-- **Production** (systèmes critiques)
-- **Gros volumes** (100-1000+ échantillons)
-- **Évolution future** (extensibilité garantie)
-- **Collaboration en équipe** (architecture claire)
-- **Déploiement Docker** (scalabilité)
+# Tests kernel features (4 tests)
+python test_kernel_features_clean.py
+# PASSED: preemption, aging, load balancing, features combinées
+```
 
 ---
 
-## 🔧 Technologies
+## 🌿 Branches Git
 
-- **Python** : 3.8+ (3.11 recommandé)
-- **Bibliothèques** : Standard library uniquement
-  - `dataclasses` : Modèles immutables
-  - `enum` : Types énumérés
-  - `typing` : Type hints
-  - `concurrent.futures` : ThreadPoolExecutor
-  - `logging` : Logs structurés
-- **Docker** : 20.10+ (optionnel)
-- **Git** : 2.30+
+| Branche | Contenu | Status |
+|---------|---------|--------|
+| `main` | Documentation + liens | ✅ Stable |
+| `feature/brute-force-approach` | V1 brute force | ✅ Pushed |
+| `feature/optimized-modular-approach` | V2 + V3 + C native | 🚧 Ready to push |
 
 ---
 
-## 📈 Benchmarks Réels
+## 📝 Résultats Conformité
 
-### Environnement
+### ✅ Niveau SIMPLE (V1)
+- ✅ Fonction `planify_lab()` conforme
+- ✅ Dataset 10/4/3 testé
+- ✅ Output JSON structure `{schedule, metrics}`
+- ✅ Limitations documentées (6/10 planifiés)
 
-- **CPU** : Intel i7-12700K (12 cœurs)
-- **RAM** : 32GB DDR4
-- **Python** : 3.11.5
-- **OS** : Windows 11
-
-### Résultats
-
-| Dataset | V1 (ms) | V2 (ms) | V3 Seq (ms) | V3 Conc (ms) |
-|---------|---------|---------|-------------|--------------|
-| 5 éch. | 2 | 1.5 | 1.5 | 1.8 |
-| 10 éch. | 4 | 2.5 | 2.5 | 2.0 |
-| 20 éch. | 15 | 8 | 15 | **4** ⚡ |
-| 50 éch. | 95 | 25 | 38 | **12** ⚡ |
-| 100 éch. | 380 | 55 | 75 | **22** ⚡ |
-
-**Observations** :
-- V2 toujours plus rapide que V1 (gain croissant)
-- V3 concurrent devient intéressant à partir de 10 échantillons
-- À 100 échantillons : V3 concurrent est **17× plus rapide** que V1 !
+### ✅ Niveau INTERMEDIATE (V3)
+- ✅ Fonction `planifyLab()` wrapper créé
+- ✅ Dataset 20/8/5 testé (100% planifiés)
+- ✅ Output JSON format `{laboratory, schedule, metrics, metadata}`
+- ✅ Champs INTERMEDIATE : efficiency, lunchBreak, averageWaitTime, technicianUtilization
+- ✅ 5/5 tests conformité passent
+- ✅ Format camelCase respecté
+- ✅ Temps format HH:MM respecté
 
 ---
 
-## 🏆 Accomplissements
+## 👤 Auteur
 
-### Implémentations
+**Fares Chehidi**  
+Email: fareschehidi7@gmail.com  
+GitHub: [@FCHEHIDI](https://github.com/FCHEHIDI)
 
-- ✅ **3 versions** complètes et fonctionnelles
-- ✅ **2 stratégies** d'ordonnancement (Priority, Greedy)
-- ✅ **4 couches** architecturales (Domain, Resources, Scheduling, Orchestration)
-- ✅ **5 design patterns** (Strategy, Facade, Generic, Value Objects, Entities)
-- ✅ **5 principes SOLID** tous respectés
-
-### Documentation
-
-- ✅ **4 README** détaillés (1 racine, 1 V1/V2, 1 V3, 1 Git)
-- ✅ **2 analyses** pédagogiques (LIMITATIONS_V1, LIMITATIONS_V2)
-- ✅ **1000+ lignes** de documentation au total
-- ✅ **Analogies** pour tous les concepts complexes
-- ✅ **Diagrammes** ASCII pour l'architecture
-
-### Infrastructure
-
-- ✅ **Dockerfile** multi-stage optimisé
-- ✅ **docker-compose.yml** avec monitoring (préparé)
-- ✅ **Healthcheck** automatique
-- ✅ **Volumes persistants** (logs, output)
-- ✅ **.gitignore** complet
-
-### Tests
-
-- ✅ **3 tests** complets dans main.py
-- ✅ **100%** de réussite sur tous les tests
-- ✅ **Benchmarks** comparatifs inclus
-
----
-
-## 🔮 Évolutions Futures
-
-### Phase 1 : Contraintes INTERMEDIATE (prioritaire)
-
-- [ ] Pauses déjeuner techniciens (12:00-13:00)
-- [ ] Maintenance équipements (plages d'indisponibilité)
-- [ ] Temps de nettoyage entre échantillons (10-30 min)
-- [ ] Coefficients d'efficacité techniciens (0.8-1.2×)
-- [ ] Capacité équipements (2-3 échantillons simultanés)
-- [ ] Interruption STAT (pause analyses en cours)
-
-### Phase 2 : Contraintes STANDARD
-
-- [ ] Multi-spécialisation techniciens
-- [ ] Urgences dynamiques (arrivée en cours)
-- [ ] Contraintes temporelles strictes (deadlines)
-- [ ] Coûts différentiels (optimisation budget)
-
-### Phase 3 : Infrastructure
-
-- [ ] API REST (FastAPI)
-- [ ] Persistance base de données (SQLAlchemy)
-- [ ] Monitoring (Prometheus + Grafana)
-- [ ] CI/CD (GitHub Actions)
-- [ ] Tests end-to-end
-
-### Phase 4 : Intelligence
-
-- [ ] Machine Learning (prédiction temps réels)
-- [ ] Optimisation multi-objectifs (temps + coût + qualité)
-- [ ] Apprentissage par renforcement (ordonnancement adaptatif)
-
----
-
-## 👨‍💻 Auteur
-
-Développé dans le cadre du cours **Algorithmic Design** - Novembre 2025
+**Contexte** : Projet d'évaluation professionnelle - Stage "incubation"
 
 ---
 
 ## 📄 Licence
 
-Projet académique - Libre d'utilisation et modification
+Projet académique - Usage éducatif uniquement
 
 ---
 
-## 🙏 Remerciements
+## 🔗 Liens Utiles
 
-Ce projet démontre l'importance de :
-- **Commencer simple** (V1 brute force)
-- **Optimiser intelligemment** (V2 indexation)
-- **Architecturer professionnellement** (V3 OOP)
-
-> "Make it work, make it right, make it fast" - Kent Beck
-
----
-
-**Dernière mise à jour** : 25 novembre 2025  
-**Version** : 3.0.0  
-**Statut** : ✅ Production-ready (V3)
+- [Repository GitHub](https://github.com/FCHEHIDI/Algorithmic_Design)
+- [Conformity Checklist](CONFORMITY_CHECKLIST.md)
+- [Architecture V3 Détaillée](v3_optimized/docs/ARCHITECTURE_DETAILED.md)
+- [Kernel Features Guide](v3_optimized/docs/KERNEL_FEATURES_GUIDE.md)
+- [Deployment C Native](c_native_kernel/DEPLOYMENT_GUIDE.md)

@@ -1,0 +1,14 @@
+============================= test session starts =============================
+platform win32 -- Python 3.11.9, pytest-9.0.1, pluggy-1.5.0 -- C:\Users\info\AppData\Local\Microsoft\WindowsApps\PythonSoftwareFoundation.Python.3.11_qbz5n2kfra8p0\python.exe
+cachedir: .pytest_cache
+rootdir: C:\Users\info\Algorithmic_Design
+plugins: anyio-4.9.0, dash-3.0.4, cov-7.0.0
+collecting ... collected 5 items
+
+v3_optimized/tests/test_intermediate_conformity.py::test_planifylab_function_exists PASSED [ 20%]
+v3_optimized/tests/test_intermediate_conformity.py::test_intermediate_dataset_20_8_5 PASSED [ 40%]
+v3_optimized/tests/test_intermediate_conformity.py::test_camelcase_format PASSED [ 60%]
+v3_optimized/tests/test_intermediate_conformity.py::test_time_format_hhmm PASSED [ 80%]
+v3_optimized/tests/test_intermediate_conformity.py::test_no_conflicts PASSED [100%]
+
+============================== 5 passed in 0.02s ==============================

@@ -12,6 +12,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 *.so
+*.pyc
 .Python
 env/
 venv/
@@ -32,6 +33,19 @@ wheels/
 .installed.cfg
 *.egg
 
+# Logs
+logs/*.log
+*.log
+
+# Outputs (keep examples)
+output/*.json
+!output/*example*.json
+
+# Environment
+.env
+.env.local
+.env.*.local
+
 # IDEs
 .vscode/
 .idea/
@@ -51,4 +65,12 @@ htmlcov/
 
 # Docker
 docker-compose.override.yml
-.env.local
+
+# Archive folders (legacy)
+BruteForceApproach/
+SYNTHESE_*.md
+PROJECT_SUMMARY.md
+README_OLD.md
+CONFORMITY_CHECKLIST.md
+GUIDE_PUSH_GIT.md
+MIGRATION_GUIDE.md

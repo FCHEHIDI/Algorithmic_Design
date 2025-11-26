@@ -1,0 +1,57 @@
+{
+  "schedule": [
+    {
+      "sample_id": "S001",
+      "technician_id": "TECH001",
+      "equipment_id": "EQ001",
+      "start_time": 0,
+      "end_time": 30,
+      "priority": "STAT"
+    },
+    {
+      "sample_id": "S004",
+      "technician_id": "TECH003",
+      "equipment_id": "EQ003",
+      "start_time": 20,
+      "end_time": 60,
+      "priority": "STAT"
+    },
+    {
+      "sample_id": "S002",
+      "technician_id": "TECH002",
+      "equipment_id": "EQ002",
+      "start_time": 10,
+      "end_time": 30,
+      "priority": "URGENT"
+    },
+    {
+      "sample_id": "S008",
+      "technician_id": "TECH001",
+      "equipment_id": "EQ001",
+      "start_time": 40,
+      "end_time": 60,
+      "priority": "URGENT"
+    },
+    {
+      "sample_id": "S006",
+      "technician_id": "TECH002",
+      "equipment_id": "EQ002",
+      "start_time": 30,
+      "end_time": 45,
+      "priority": "ROUTINE"
+    },
+    {
+      "sample_id": "S009",
+      "technician_id": "TECH002",
+      "equipment_id": "EQ002",
+      "start_time": 45,
+      "end_time": 70,
+      "priority": "ROUTINE"
+    }
+  ],
+  "metrics": {
+    "total_time": 150,
+    "efficiency": 0.04,
+    "conflicts": 4
+  }
+}
