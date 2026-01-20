@@ -1,5 +1,5 @@
 # 🧪 Algorithmic Design - Planificateur de Laboratoire
-
+![Algorithmic_Design](system76.png)
 ## 🎯 Vue d'Ensemble
 
 Projet académique démontrant l'**évolution d'un algorithme** depuis une implémentation naïve jusqu'à une architecture professionnelle de production.
